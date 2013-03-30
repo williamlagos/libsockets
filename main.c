@@ -1,9 +1,4 @@
-#include <stdio.h>
-#include <string.h>
-
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <netinet/in.h>
+#include "sockets.h"
 
 int main (int argc, char** argv)
 {
@@ -12,7 +7,7 @@ int main (int argc, char** argv)
 	char buffer[256];
 	
 	sockfd = socket(AF_INET,SOCK_STREAM,0);
-	if(sockfd < 0){ perror("ERRO ao abrir o socket"); return 1; }
+	if(sockfd < 0) error("ERRO ao abrir o socket");
 	
 	port_number = 5001;
 	bzero((char*) &server_addr,sizeof(server_addr));
@@ -21,25 +16,23 @@ int main (int argc, char** argv)
 	server_addr.sin_port = htons(port_number);
 
 	if(bind(sockfd,(struct sockaddr*) &server_addr,
-		sizeof(server_addr)) > 0){
-		perror("ERRO ao ligar o socket ao hostname");
-		return 1;
-	}
+		sizeof(server_addr)) > 0)
+		error("ERRO ao ligar o socket ao hostname");
 	
 	listen(sockfd,5);
 	client_len = sizeof(client_addr);
 	
 	newsockfd = accept(sockfd,(struct sockaddr*) &client_addr, &client_len);
 	
-	if(newsockfd < 0){ perror("ERRO ao aceitar a conexao com o cliente"); return 1; }
+	if(newsockfd < 0) error("ERRO ao aceitar a conexao com o cliente");
 	
 	bzero(buffer,256);
 	n = read(newsockfd,buffer,255);
-	if(n < 0){ perror("ERRO ao ler do socket"); }
+	if(n < 0) error("ERRO ao ler do socket");
 	printf("Aqui esta a mensagem: %s\n",buffer);
 
 	n = write(newsockfd,"Eu consegui ler a tua mensagem",30);
-	if(n < 0){ perror("ERRO ao escrever no socket"); return 1; }
+	if(n < 0) error("ERRO ao escrever no socket");
 
 	close(newsockfd);
 	close(sockfd);
