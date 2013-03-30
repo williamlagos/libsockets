@@ -31,7 +31,7 @@ int main(int argc, char** argv)
 	      server->h_length);
 	server_addr.sin_port = htons(port_number);
 	
-	if(connect(sockfd,&server_addr,sizeof(server_addr)) > 0){ perror("ERRO ao conectar"); return 1; }
+	if(connect(sockfd,(struct sockaddr*) &server_addr,sizeof(server_addr)) > 0){ perror("ERRO ao conectar"); return 1; }
 	printf("Por favor, entre com a mensagem para o servidor: ");
 	bzero(buffer,256);
 	fgets(buffer,255,stdin);
