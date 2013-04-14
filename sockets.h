@@ -43,23 +43,28 @@ build_address
 }
 
 void
-readfrom_socket
-(int *socket_file, int size)
+connect_socket
+(int* socket_file,
+ struct sockaddr_in server_addr)
 {
 	int fd = *socket_file;
-	char buffer[size];
-	bzero(buffer,size-1);
-	int status = read(fd,buffer,strlen(buffer));
-	if(status < 0) error("ERRO ao ler do socket");
-	else printf("%s\n",buffer);
+	int status = connect(fd,(struct sockaddr*) &server_addr,
+	   		 sizeof(server_addr));
+	if(status < 0) error("ERRO ao conectar");
 }
 
-void
-writeto_socket
-(int *socket_file, 
- const char *buffer)
+int
+listen_socket
+(int *socket_file,
+ struct sockaddr_in address)
 {
-	int fd = *socket_file;
-	int n = write(fd,buffer,strlen(buffer));
-	if(n < 0) error("ERRO ao escrever no socket");
-}	
+	int socket = *socket_file;
+	struct sockaddr_in client_address;
+	if(bind(socket,(struct sockaddr*)&address,sizeof(address)) > 0)
+		error("ERRO ao ligar o socket ao hostname");
+	listen(socket,5);
+	socklen_t client_len = sizeof(client_address);
+	int newsocket = accept(socket,(struct sockaddr*)&client_address,&client_len);
+	if(newsocket < 0) error("ERRO ao aceitar a conexao com o cliente");
+	return newsocket;
+} 
