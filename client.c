@@ -1,5 +1,5 @@
-#include "sockets.h"
 #include "utils.h"
+#include "sockets.h"
 
 int main(int argc, char **argv)
 {
