@@ -1,6 +1,6 @@
 CC = gcc
 
-release:
+all:
 	$(CC) server.c sockets.c -o server
 	$(CC) client.c sockets.c -o client
 	$(CC) -c -fPIC sockets.c -o sockets.o
