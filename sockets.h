@@ -11,6 +11,9 @@
 #define UDP SOCK_DGRAM
 #define TCP SOCK_STREAM
 
+typedef struct sockaddr Address;
+typedef struct sockaddr_in6 IPV6_Address;
+
 int socket_size(int ip_version);
 int create_socket(int ip_version,int socket_type);
 int listen_socket(int* socket_file,struct sockaddr* address);

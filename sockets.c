@@ -24,10 +24,9 @@ int
 socket_size
 (int ip_version)
 {
-	if(ip_version == AF_INET) 
-		return sizeof(struct sockaddr_in);
-	else if(ip_version == AF_INET6) 
+	if(ip_version == AF_INET6) 
 		return sizeof(struct sockaddr_in6);
+	return sizeof(struct sockaddr_in);
 }
 
 int 
@@ -103,7 +102,7 @@ listen_socket
  struct sockaddr* address)
 {
 	int socket = *socket_file;
-	int size = socket_size(address->sa_family);
+	socklen_t size = socket_size(address->sa_family);
 	bind_socket(socket_file,address);
 	listen(socket,5);
 	int newsocket = accept(socket,(struct sockaddr*)malloc(size),&size);
@@ -119,10 +118,9 @@ recv_socket
 {
 	int bytes = 0;
 	int socket = *socket_file;
-	int size = socket_size(address->sa_family);
+	socklen_t size = socket_size(address->sa_family);
 	bytes = recvfrom(socket,buffer,strlen(buffer),0,address,&size);
 	if(bytes == -1) error("ERRO ao receber do soquete");
-	buffer[bytes] = '\0';
 }
 
 void
@@ -133,8 +131,7 @@ send_socket
 {
 	int bytes = 0;
 	int socket = *socket_file;
-	int size = socket_size(address->sa_family);
+	socklen_t size = socket_size(address->sa_family);
 	bytes = sendto(socket,buffer,strlen(buffer),0,address,size);
 	if(bytes == -1) error("ERRO ao enviar para o soquete");
-	buffer[bytes] = '\0';
 }
