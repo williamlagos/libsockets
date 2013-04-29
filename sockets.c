@@ -20,12 +20,21 @@ read_input
 	return buffer;
 }
 
+int
+socket_size
+(int ip_version)
+{
+	if(ip_version == AF_INET) 
+		return sizeof(struct sockaddr_in);
+	else if(ip_version == AF_INET6) 
+		return sizeof(struct sockaddr_in6);
+}
+
 int 
-create_socket(int ipversion)
+create_socket(int ip_version,int socket_type)
 {
 	int socket_file;
-	if(ipversion == 4) socket_file = socket(AF_INET,SOCK_STREAM,0);
-	else socket_file = socket(AF_INET6,SOCK_STREAM,0);
+	socket_file = socket(ip_version,socket_type,0);
 	if(socket_file < 0) error("ERRO ao tentar abrir o soquete");
 	return socket_file;
 }
@@ -51,26 +60,41 @@ build_address
 void
 connect_socket
 (int* socket_file,
- struct sockaddr_in server_addr)
+ struct sockaddr* address)
 {
-	int fd = *socket_file;
-	int status = connect(fd,(struct sockaddr*) &server_addr,
-	   		 sizeof(server_addr));
+	int status = -1;
+	int f = *socket_file;
+	status = connect(f,address,socket_size(address->sa_family));
 	if(status < 0) error("ERRO ao conectar");
 }
 
 int
 listen_socket
-(int *socket_file,
- struct sockaddr_in address)
+(int* socket_file,
+ struct sockaddr* address)
 {
 	int socket = *socket_file;
-	struct sockaddr_in6 client_address;
-	if(bind(socket,(struct sockaddr*)&address,sizeof(address)) > 0)
+	int size = socket_size(address->sa_family);
+	if(bind(socket,address,size) > 1)
 		error("ERRO ao ligar o socket ao hostname");
 	listen(socket,5);
-	socklen_t client_len = sizeof(client_address);
-	int newsocket = accept(socket,(struct sockaddr*)&client_address,&client_len);
+	int newsocket = accept(socket,(struct sockaddr*)malloc(size),&size);
 	if(newsocket < 0) error("ERRO ao aceitar a conexao com o cliente");
 	return newsocket;
-} 
+}
+ 
+void
+recv_socket
+(int* socket_file,
+ struct sockaddr* address,
+ char* buffer)
+{
+	int bytes = 0;
+	int socket = *socket_file;
+	int size = socket_size(address->sa_family);
+	if(bind(socket,address,size) > 0)
+		error("ERRO ao ligar o socket ao hostname");
+	bytes = recvfrom(socket,buffer,strlen(buffer),0,
+	(struct sockaddr*)malloc(size),&size);
+	buffer[bytes] = '\0';
+}
