@@ -41,7 +41,7 @@ create_socket(int ip_version,int socket_type)
 
 struct
 sockaddr_in
-build_address
+ipv4_address
 (const char* host_name,
  int port_number)
 {
@@ -54,6 +54,24 @@ build_address
 		if(s == NULL) error("ERRO, nenhum host encontrado\n");
 		bcopy((char*)s->h_addr,(char*)&serv_addr.sin_addr.s_addr,s->h_length);
 	}else serv_addr.sin_addr.s_addr = INADDR_ANY;
+	return serv_addr;
+}
+
+struct
+sockaddr_in6
+ipv6_address
+(const char* host_name,
+ int port_number)
+{
+	struct sockaddr_in6 serv_addr;
+	bzero((char *) &serv_addr, sizeof(serv_addr));
+	serv_addr.sin6_family = AF_INET6;
+	serv_addr.sin6_port = htons(port_number);
+	if(strlen(host_name) != 0){
+		struct hostent *s = gethostbyname2(host_name,AF_INET6);
+		if(s == NULL) error("ERRO, nenhum host encontrado\n");
+		bcopy((char*)s->h_addr,(char*)&serv_addr.sin6_addr.s6_addr,s->h_length);
+	}else serv_addr.sin6_addr = in6addr_any;
 	return serv_addr;
 }
 

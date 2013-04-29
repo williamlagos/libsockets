@@ -18,5 +18,5 @@ void bind_socket(int* socket_file,struct sockaddr* address);
 void recv_socket(int* socket_file,struct sockaddr* address,char* buffer);
 void send_socket(int* socket_file,struct sockaddr* address,char* buffer);
 void connect_socket(int* socket_file,struct sockaddr* address);
-struct sockaddr_in build_address(const char* host_name,int port_number);
-struct sockaddr_in6 build_ipv6_address(const char* host_name,int port_number);
+struct sockaddr_in  ipv4_address(const char* host_name,int port_number);
+struct sockaddr_in6 ipv6_address(const char* host_name,int port_number);
