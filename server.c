@@ -7,15 +7,12 @@ int main(int argc, char** argv)
 	if(argc < 2) error("Uso: server porta\n");
 	int socket = create_socket(IPV6,UDP);
 	IPV6_Address address = ipv6_address("",atoi(argv[1]));
-	char* buffer = (char*) malloc(256);
-	Header* head = (Header*) malloc(sizeof(Header));
 	bind_socket(&socket,(Address*)&address);
+	void* buffer = (void*) malloc(256);
 	while(1){
-		puts("ABC\n");
-		recv_socket(&socket,(Address*)&address,buffer);
-		memcpy(&head,&buffer,sizeof(buffer));
-		printf("Mensagem lida: %s\n",buffer);
-		printf("Enviado: %c\n",head->opcode);
+		recv_socket(&socket,(Address*)&address,buffer,256);
+		Header* head = (Header*) buffer;
+		printf("Mensagem lida: %c\n",head->opcode);
 		send_socket(&socket,(Address*)&address,buffer);
 	}
 	/*int newsocket = listen_socket(

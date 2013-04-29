@@ -114,12 +114,13 @@ void
 recv_socket
 (int* socket_file,
  struct sockaddr* address,
- char* buffer)
+ void* buffer,
+ int buffer_size)
 {
 	int bytes = 0;
 	int socket = *socket_file;
 	socklen_t size = socket_size(address->sa_family);
-	bytes = recvfrom(socket,buffer,strlen(buffer),0,address,&size);
+	bytes = recvfrom(socket,buffer,buffer_size,0,address,&size);
 	if(bytes == -1) error("ERRO ao receber do soquete");
 }
 
@@ -127,7 +128,7 @@ void
 send_socket
 (int* socket_file,
  struct sockaddr* address,
- char* buffer)
+ void* buffer)
 {
 	int bytes = 0;
 	int socket = *socket_file;
