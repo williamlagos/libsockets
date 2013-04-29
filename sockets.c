@@ -68,8 +68,8 @@ connect_socket
 	if(status < 0) error("ERRO ao conectar");
 }
 
-int
-listen_socket
+void
+bind_socket
 (int* socket_file,
  struct sockaddr* address)
 {
@@ -77,6 +77,16 @@ listen_socket
 	int size = socket_size(address->sa_family);
 	if(bind(socket,address,size) > 1)
 		error("ERRO ao ligar o socket ao hostname");
+}
+
+int
+listen_socket
+(int* socket_file,
+ struct sockaddr* address)
+{
+	int socket = *socket_file;
+	int size = socket_size(address->sa_family);
+	bind_socket(socket_file,address);
 	listen(socket,5);
 	int newsocket = accept(socket,(struct sockaddr*)malloc(size),&size);
 	if(newsocket < 0) error("ERRO ao aceitar a conexao com o cliente");
@@ -92,9 +102,21 @@ recv_socket
 	int bytes = 0;
 	int socket = *socket_file;
 	int size = socket_size(address->sa_family);
-	if(bind(socket,address,size) > 0)
-		error("ERRO ao ligar o socket ao hostname");
-	bytes = recvfrom(socket,buffer,strlen(buffer),0,
-	(struct sockaddr*)malloc(size),&size);
+	bytes = recvfrom(socket,buffer,strlen(buffer),0,address,&size);
+	if(bytes == -1) error("ERRO ao receber do soquete");
+	buffer[bytes] = '\0';
+}
+
+void
+send_socket
+(int* socket_file,
+ struct sockaddr* address,
+ char* buffer)
+{
+	int bytes = 0;
+	int socket = *socket_file;
+	int size = socket_size(address->sa_family);
+	bytes = sendto(socket,buffer,strlen(buffer),0,address,size);
+	if(bytes == -1) error("ERRO ao enviar para o soquete");
 	buffer[bytes] = '\0';
 }
