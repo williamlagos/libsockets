@@ -6,10 +6,10 @@
 #include<netinet/in.h>
 #include<netdb.h>
 
-#define IPV6_ENABLED 1
-#define IPV6_DISABLED 0
+#define IPV6_ENABLED 6
+#define IPV6_DISABLED 4
 
-int create_socket(int ipv6);
+int create_socket(int ipversion);
 int listen_socket(int *socket_file,struct sockaddr_in address);
 int listen_ipv6_socket(int *socket_file,struct sockaddr_in6 address);
 void connect_socket(int* socket_file,struct sockaddr_in server_addr);
