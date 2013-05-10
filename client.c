@@ -20,7 +20,8 @@ int main(int argc, char **argv)
 	read(socket,buffer,255);*/
 
 	Header* head = (Header*) malloc(sizeof(Header));
-	head->opcode = '1';
+	head->opcode = 'A';
+	//head_packet(head);
 	send_socket(&socket,(Address*)&address,(Header*)head);
 	recv_socket(&socket,(Address*)&address,(Header*)head,256);
 	printf("Recebido: %c\n",head->opcode);
