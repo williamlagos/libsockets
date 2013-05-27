@@ -6,7 +6,7 @@ void
 head_packet
 (Header* packet)
 {
-	strcpy(packet->opcode,'1');
+/*	strcpy(packet->opcode,'1');
 	strcpy(packet->padding0,' ');
 	strcpy(packet->pkglen,"12");
 	strcpy(packet->ipdst," ");
@@ -16,7 +16,7 @@ head_packet
 	strcpy(packet->clientid,' ');
 	strcpy(packet->crctype,' ');
 	strcpy(packet->padding1,"  ");
-	strcpy(packet->crc,"    ");
+	strcpy(packet->crc,"    ");*/
 }
 
 void		
