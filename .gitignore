@@ -10,8 +10,22 @@
 *.so
 *.so.*
 *.dylib
+*.build
+
+# Projects
+*.vcxproj
+*.xcodeproj
+*.sln
+Debug*
+Release*
 
 # Executables
 *.exe
 *.out
 *.app
+
+# CMake
+*.cmake
+CMakeCache*
+CMakeFiles*
+CMakeScripts*
