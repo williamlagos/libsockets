@@ -15,6 +15,7 @@
 
 typedef struct sockaddr Address;
 typedef struct sockaddr_in6 IPV6_Address;
+typedef struct in6_addr IPV6_Struct;
 
 int socket_size(int ip_version);
 int create_socket(int ip_version,int socket_type);
@@ -25,4 +26,4 @@ void send_socket(int* socket_file,struct sockaddr* address,void* buffer,int buff
 void connect_socket(int* socket_file,struct sockaddr* address);
 struct sockaddr_in  ipv4_address(const char* address,int port_number);
 struct sockaddr_in6 ipv6_address(const char* address,int port_number);
-struct sockaddr_in6 ipv6_ifaddress(const char* interface);
+struct sockaddr_in6 ipv6_ifaddress(const char* interface,int port_number);

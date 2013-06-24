@@ -1,12 +1,25 @@
 #include"utils.h"
 #include"sockets.h"
 
+void
+logto
+(const char *type,
+ const char *msg)
+{
+	printf("[%s] %s\n",type,msg);
+	FILE* file = fopen("sockets.log","a+");
+	fprintf(file,"[%s] %s\n",type,msg);
+	fclose(file);
+}
+
 void 
 error
-(const char *msg)
+(const char *msg,
+ int exitcode)
 {
+	logto("ERRO",msg);
 	perror(msg);
-	exit(1);
+	exit(exitcode);
 }
 
 char*
@@ -34,7 +47,7 @@ create_socket(int ip_version,int socket_type)
 {
 	int socket_file;
 	socket_file = socket(ip_version,socket_type,0);
-	if(socket_file < 0) error("ERRO ao tentar abrir o soquete");
+	if(socket_file < 0) error("ERRO ao tentar abrir o soquete",1);
 	return socket_file;
 }
 
@@ -74,7 +87,7 @@ connect_socket
 	int status = -1;
 	int f = *socket_file;
 	status = connect(f,address,socket_size(address->sa_family));
-	if(status < 0) error("ERRO ao conectar");
+	if(status < 0) error("ERRO ao conectar",1);
 }
 
 void
@@ -85,7 +98,7 @@ bind_socket
 	int socket = *socket_file;
 	int size = socket_size(address->sa_family);
 	if(bind(socket,address,size) > 1)
-		error("ERRO ao ligar o socket ao hostname");
+		error("ERRO ao ligar o socket ao hostname",1);
 }
 
 int
@@ -98,7 +111,7 @@ listen_socket
 	bind_socket(socket_file,address);
 	listen(socket,5);
 	int newsocket = accept(socket,(struct sockaddr*)malloc(size),&size);
-	if(newsocket < 0) error("ERRO ao aceitar a conexao com o cliente");
+	if(newsocket < 0) error("ERRO ao aceitar a conexao com o cliente",1);
 	return newsocket;
 }
  
@@ -113,7 +126,7 @@ recv_socket
 	int socket = *socket_file;
 	socklen_t size = socket_size(address->sa_family);
 	bytes = recvfrom(socket,buffer,buffer_size,0,address,&size);
-	if(bytes == -1) error("ERRO ao receber do soquete");
+	if(bytes == -1) error("ERRO ao receber do soquete",1);
 }
 
 void
@@ -127,13 +140,14 @@ send_socket
 	int socket = *socket_file;
 	socklen_t size = socket_size(address->sa_family);
 	bytes = sendto(socket,buffer,buffer_size,0,address,size);
-	if(bytes == -1) error("ERRO ao enviar para o soquete");
+	if(bytes == -1) error("ERRO ao enviar para o soquete",1);
 }
 
 struct 
 sockaddr_in6
 ipv6_ifaddress
-(const char* interface)
+(const char* interface,
+ int port_number)
 {
 	struct ifaddrs* ifa;
 	struct sockaddr_in6* addr;
@@ -142,6 +156,7 @@ ipv6_ifaddress
 		if(ifa->ifa_addr->sa_family == AF_INET6 && 
 		   strcmp(interface,ifa->ifa_name) == 0)
 			addr = (struct sockaddr_in6*) ifa->ifa_addr;
+			addr->sin6_port = htons(port_number);
 		ifa = ifa->ifa_next;
 	}
 	return *addr;
