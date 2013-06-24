@@ -33,11 +33,11 @@ typedef struct {
 	uint8_t data[2048];
 } Data;
 
-void header_packet(Header* packet,IPV6_Address* addr_dst,IPV6_Address* addr_src,int port_num);
+void header_packet(Header* packet,int opcode,IPV6_Address* addr_dst,IPV6_Address* addr_src,int port_num);
 void unpack_header(Header* packet,IPV6_Address* addr,int port_num);
 void connection_packet(Connection* packet,int connectype,int windowsize,char* filename);
-void unpack_connection(Connection* packet, IPV6_Address* addr, int port_num);
+void unpack_connection(Connection* packet,IPV6_Address* addr,int port_num);
 void confimation_packet(Confirmation* packet,int confirmationcode,int sequencenumber);
-void unpack_confirmation(Confirmation* packet, IPV6_Address* addr, int port_num);
-void data_packet(Data* packet);
-void unpack_data(Data* packet, IPV6_Address* addr, int port_num);
+void unpack_confirmation(Confirmation* packet,IPV6_Address* addr,int port_num);
+void data_packet(Data* packet,char* filename);
+void unpack_data(Data* packet);

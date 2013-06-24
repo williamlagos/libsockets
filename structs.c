@@ -5,12 +5,13 @@
 void		
 header_packet
 (Header* packet,
+ int opcode,
  IPV6_Address* addr_dst,
  IPV6_Address* addr_src,
  int port_num)
 {
 	char buffer[256],message[256];
-	packet->opcode = 1;
+	packet->opcode = opcode;
 	logto("START","Enviando pacote de Cabecalho");
 	packet->padding0 = ' ';
 	packet->pkglen = sizeof(Header)*8;
@@ -137,27 +138,28 @@ confirmation_packet
 	packet->number = sequencenumber;
 }
 
-void		
-unpack_confirmation
-(Confirmation* packet,
- IPV6_Address* addr,
- int port_num)
-{
-	
-}
-
 void
 data_packet
-(Data* packet)
+(Data* packet,
+ char* filename)
 {
-	
+	packet->seqnumber = 0;
+	FILE *fl = fopen(filename, "r");  
+    fseek(fl, 0, SEEK_END);  
+    long len = ftell(fl);
+    char *ret = malloc(len);  
+	packet->datalen = len;
+    fseek(fl, 0, SEEK_SET);  
+    fread(ret, 1, len, fl);  
+    fclose(fl);  
+	bcopy(ret,packet->data,len);
 }
 
 void
 unpack_data
-(Data* packet,
- IPV6_Address* addr,
- int port_num)
+(Data* packet)
 {
-	
+	FILE* file = fopen("saida.txt","wb");
+	fwrite(packet->data,1,2048,file);
+	logto("DONE","Arquivo recebido com sucesso em saida.txt");
 }

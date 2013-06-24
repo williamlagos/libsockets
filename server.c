@@ -16,9 +16,9 @@ int main(int argc, char** argv)
 		// Pacote de Cabecalho
 		Header* head = (Header*) buffer;
 		unpack_header(head,&address,atoi(argv[1]));
-		recv_socket(&socket,(Address*)&address,buffer,sizeof(Connection)*8);
 		if(head->opcode == 1){
 			// Pacote de Conexao
+			recv_socket(&socket,(Address*)&address,buffer,sizeof(Connection)*8);
 			Connection* conn = (Connection*) buffer;
 			unpack_connection(conn,&address,atoi(argv[1]));
 			// Pacote de Confirmacao
@@ -27,8 +27,9 @@ int main(int argc, char** argv)
 			send_socket(&socket,(Address*)&address,buffer,sizeof(Confirmation)*8);
 		}else if(head->opcode == 4){
 			// Pacote de Dados
+			recv_socket(&socket,(Address*)&address,buffer,sizeof(Data));
 			Data* data = (Data*) buffer;
-			unpack_data(data,&address,atoi(argv[1]));
+			unpack_data(data);
 		}
 		//send_socket(&socket,(Address*)&address,buffer,256);
 	}

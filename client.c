@@ -31,12 +31,17 @@ int main(int argc, char **argv)
 	Header* head = (Header*) malloc(sizeof(Header));
 	Connection* conn = (Connection*) malloc(sizeof(Connection));
 	Confirmation* conf = (Confirmation*) malloc(sizeof(Confirmation));
-	header_packet(head,&address,&client_address,port_num);
+	header_packet(head,1,&address,&client_address,port_num);
 	connection_packet(conn,ESTABLISH,31,"teste.txt");
 	send_socket(&socket,(Address*)&address,(Header*)head,sizeof(Header)*8);
 	send_socket(&socket,(Address*)&address,(Connection*)conn,sizeof(Connection)*8);	
 	recv_socket(&socket,(Address*)&address,(Confirmation*)conf,sizeof(Confirmation)*8);
 	if(conf->opcode == 1) logto("DONE","Pronto para enviar arquivos");
+	header_packet(head,4,&address,&client_address,port_num);
+	send_socket(&socket,(Address*)&address,(Header*)head,sizeof(Header)*8);
+	Data* data = (Data*) malloc(sizeof(Data));
+	data_packet(data,"teste.txt");
+	send_socket(&socket,(Address*)&address,(Data*)data,sizeof(Data));
 	close(socket);
 	return 0;
 }
