@@ -26,10 +26,6 @@ typedef struct {
 	unsigned char number[4];
 } Confirmation;
 
-void head_packet(Header* packet);
-void conn_packet(Connection* packet);
-void conf_packet(Confirmation* packet);
-
-char* head_serialize(Header* serial);
-char* conn_serialize(Connection* serial);
-char* conf_serialize(Confirmation* serial);
+void header_packet(Header* packet);
+void connection_packet(Connection* packet);
+void configuration_packet(Confirmation* packet);

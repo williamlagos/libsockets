@@ -41,36 +41,28 @@ create_socket(int ip_version,int socket_type)
 struct
 sockaddr_in
 ipv4_address
-(const char* host_name,
+(const char* address,
  int port_number)
 {
 	struct sockaddr_in serv_addr;
 	bzero((char *) &serv_addr, sizeof(serv_addr));
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_port = htons(port_number);
-	if(strlen(host_name) != 0){
-		struct hostent *s = gethostbyname2(host_name,AF_INET);
-		if(s == NULL) error("ERRO, nenhum host encontrado\n");
-		bcopy((char*)s->h_addr,(char*)&serv_addr.sin_addr.s_addr,s->h_length);
-	}else serv_addr.sin_addr.s_addr = INADDR_ANY;
+	inet_pton(serv_addr.sin_family,address,&(serv_addr.sin_addr));
 	return serv_addr;
 }
 
 struct
 sockaddr_in6
 ipv6_address
-(const char* host_name,
+(const char* address,
  int port_number)
 {
 	struct sockaddr_in6 serv_addr;
 	bzero((char *) &serv_addr, sizeof(serv_addr));
 	serv_addr.sin6_family = AF_INET6;
 	serv_addr.sin6_port = htons(port_number);
-	if(strlen(host_name) != 0){
-		struct hostent *s = gethostbyname2(host_name,AF_INET6);
-		if(s == NULL) error("ERRO, nenhum host encontrado\n");
-		bcopy((char*)s->h_addr,(char*)&serv_addr.sin6_addr.s6_addr,s->h_length);
-	}else serv_addr.sin6_addr = in6addr_any;
+	inet_pton(serv_addr.sin6_family,address,&(serv_addr.sin6_addr));
 	return serv_addr;
 }
 

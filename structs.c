@@ -3,11 +3,11 @@
 #include "structs.h"
 
 void		
-head_packet
+header_packet
 (Header* packet)
 {
-/*	strcpy(packet->opcode,'1');
-	strcpy(packet->padding0,' ');
+	packet->opcode = '1';
+/*	strcpy(packet->padding0,' ');
 	strcpy(packet->pkglen,"12");
 	strcpy(packet->ipdst," ");
 	strcpy(packet->ipsrc," ");
@@ -20,36 +20,15 @@ head_packet
 }
 
 void		
-conn_packet
+connection_packet
 (Connection* packet)
 {
 
 }
 
 void		
-conf_packet
+configuration_packet
 (Confirmation* packet)
-{
-
-}
-
-char* 
-head_serialize
-(Header* serial)
-{
-
-}
-
-char* 
-conn_serialize
-(Connection* serial)
-{
-
-}
-
-char* 
-conf_serialize
-(Confirmation* serial)
 {
 
 }
