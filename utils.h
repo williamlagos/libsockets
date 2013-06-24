@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<time.h>
 
 #define forever while(1)
 
@@ -15,6 +16,13 @@
 #define INVALID_OPCODE				0x809
 #define INVALID_WINDOWSIZE			0x80A
 #define INVALID_FILENAME			0x80B
+
+#define ESTABLISHED 1
+#define REJECTED 2
+#define ERROR 4
+
+#define ESTABLISH 1
+#define CLOSE 2
 
 void error(const char *msg,int exitcode);
 void logto(const char *type,const char *msg);

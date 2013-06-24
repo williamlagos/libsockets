@@ -29,10 +29,14 @@ int main(int argc, char **argv)
 	read(socket,buffer,255);*/
 
 	Header* head = (Header*) malloc(sizeof(Header));
+	Connection* conn = (Connection*) malloc(sizeof(Connection));
+	Confirmation* conf = (Confirmation*) malloc(sizeof(Confirmation));
 	header_packet(head,&address,&client_address,port_num);
-	send_socket(&socket,(Address*)&address,(Header*)head,256);
-	recv_socket(&socket,(Address*)&address,(Header*)head,256);
-	printf("Recebido: %d\n",head->opcode);
+	connection_packet(conn,ESTABLISH,31,"teste.txt");
+	send_socket(&socket,(Address*)&address,(Header*)head,sizeof(Header)*8);
+	send_socket(&socket,(Address*)&address,(Connection*)conn,sizeof(Connection)*8);	
+	recv_socket(&socket,(Address*)&address,(Confirmation*)conf,sizeof(Confirmation)*8);
+	if(conf->opcode == 1) logto("DONE","Pronto para enviar arquivos");
 	close(socket);
 	return 0;
 }

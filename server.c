@@ -12,9 +12,25 @@ int main(int argc, char** argv)
 	int socket = create_socket(IPV6,UDP);
 	bind_socket(&socket,(Address*)&address);
 	forever{
-		recv_socket(&socket,(Address*)&address,buffer,256);
-		unpack_header((Header*) buffer,&address,atoi(argv[1]));
-		send_socket(&socket,(Address*)&address,buffer,256);
+		recv_socket(&socket,(Address*)&address,buffer,sizeof(Header)*8);
+		// Pacote de Cabecalho
+		Header* head = (Header*) buffer;
+		unpack_header(head,&address,atoi(argv[1]));
+		recv_socket(&socket,(Address*)&address,buffer,sizeof(Connection)*8);
+		if(head->opcode == 1){
+			// Pacote de Conexao
+			Connection* conn = (Connection*) buffer;
+			unpack_connection(conn,&address,atoi(argv[1]));
+			// Pacote de Confirmacao
+			Confirmation* conf = (Confirmation*) buffer;
+			confirmation_packet(conf,ESTABLISHED,0);
+			send_socket(&socket,(Address*)&address,buffer,sizeof(Confirmation)*8);
+		}else if(head->opcode == 4){
+			// Pacote de Dados
+			Data* data = (Data*) buffer;
+			unpack_data(data,&address,atoi(argv[1]));
+		}
+		//send_socket(&socket,(Address*)&address,buffer,256);
 	}
 	/*int newsocket = listen_socket(
 	&socket,(struct sockaddr*)&address);
