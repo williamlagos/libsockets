@@ -4,24 +4,28 @@
 
 void		
 header_packet
-(Header* packet)
+(Header* packet,
+ IPV6_Address* addr_dst,
+ IPV6_Address* addr_src)
 {
 	packet->opcode = 1;
+	puts("Pacote de Cabecalho\n");
 	packet->padding0 = ' ';
 	packet->pkglen = 1;
+	puts("Tamanho do pacote: 256 bits");
 
-	packet->ipdst[0] = 0;
-	packet->ipdst[1] = 0;
-	packet->ipdst[2] = 0;
-	packet->ipdst[3] = 0;
-
-	packet->ipsrc[0] = 1;
-	packet->ipsrc[1] = 1;
-	packet->ipsrc[2] = 1;
-	packet->ipsrc[3] = 1;
-
-	packet->srcport = 5001;
-	packet->dstport = 5001;
+	char buffer[256];
+	inet_ntop(IPV6,&addr_src->sin6_addr,buffer,sizeof(buffer));
+	inet_pton(IPV6,buffer,(char*)&packet->ipsrc);
+	printf("IP Origem: %s\n",buffer);
+	inet_ntop(IPV6,&addr_dst->sin6_addr,buffer,sizeof(buffer));
+	inet_pton(IPV6,buffer,(char*)&packet->ipdst);
+	printf("IP Destino: %s\n",buffer);
+	
+	packet->srcport = 5001;//addr_src->sin6_port;
+	packet->dstport = 5001;//addr_dst->sin6_port;
+	printf("Porta do socket: %hd\n",packet->dstport);
+	
 	/*strcpy(packet->clientid,' ');
 	strcpy(packet->crctype,' ');
 	strcpy(packet->padding1,"  ");

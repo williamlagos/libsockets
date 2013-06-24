@@ -33,6 +33,6 @@ typedef struct {
 	uint8_t data[2048];
 } Data;
 
-void header_packet(Header* packet);
+void header_packet(Header* packet, IPV6_Address* addr_dst, IPV6_Address* addr_src);
 void connection_packet(Connection* packet);
 void configuration_packet(Confirmation* packet);

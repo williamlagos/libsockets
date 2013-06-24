@@ -3,6 +3,7 @@
 
 #include<sys/types.h>
 #include<sys/socket.h>
+#include<ifaddrs.h>
 #include<arpa/inet.h>
 #include<netinet/in.h>
 #include<netdb.h>
@@ -24,3 +25,4 @@ void send_socket(int* socket_file,struct sockaddr* address,void* buffer,int buff
 void connect_socket(int* socket_file,struct sockaddr* address);
 struct sockaddr_in  ipv4_address(const char* address,int port_number);
 struct sockaddr_in6 ipv6_address(const char* address,int port_number);
+struct sockaddr_in6 ipv6_ifaddress(const char* interface);

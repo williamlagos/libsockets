@@ -129,3 +129,20 @@ send_socket
 	bytes = sendto(socket,buffer,buffer_size,0,address,size);
 	if(bytes == -1) error("ERRO ao enviar para o soquete");
 }
+
+struct 
+sockaddr_in6
+ipv6_ifaddress
+(const char* interface)
+{
+	struct ifaddrs* ifa;
+	struct sockaddr_in6* addr;
+	getifaddrs(&ifa);
+	while (ifa != NULL) {
+		if(ifa->ifa_addr->sa_family == AF_INET6 && 
+		   strcmp(interface,ifa->ifa_name) == 0)
+			addr = (struct sockaddr_in6*) ifa->ifa_addr;
+		ifa = ifa->ifa_next;
+	}
+	return *addr;
+}
