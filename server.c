@@ -9,7 +9,7 @@ int main(int argc, char** argv)
 	IPV6_Address address = ipv6_address("",atoi(argv[1]));
 	bind_socket(&socket,(Address*)&address);
 	void* buffer = (void*) malloc(256);
-	while(1){
+	forever{
 		recv_socket(&socket,(Address*)&address,buffer,256);
 		Header* head = (Header*) buffer;
 		printf("Mensagem lida: %c\n",head->opcode);

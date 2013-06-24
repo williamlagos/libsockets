@@ -7,7 +7,7 @@ header_packet
 (Header* packet)
 {
 	packet->opcode = '1';
-/*	strcpy(packet->padding0,' ');
+	/*strcpy(packet->padding0,"");
 	strcpy(packet->pkglen,"12");
 	strcpy(packet->ipdst," ");
 	strcpy(packet->ipsrc," ");
