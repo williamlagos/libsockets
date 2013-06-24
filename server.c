@@ -13,7 +13,7 @@ int main(int argc, char** argv)
 		recv_socket(&socket,(Address*)&address,buffer,256);
 		Header* head = (Header*) buffer;
 		printf("Mensagem lida: %c\n",head->opcode);
-		send_socket(&socket,(Address*)&address,buffer);
+		send_socket(&socket,(Address*)&address,buffer,256);
 	}
 	/*int newsocket = listen_socket(
 	&socket,(struct sockaddr*)&address);

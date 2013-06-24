@@ -6,14 +6,23 @@ void
 header_packet
 (Header* packet)
 {
-	packet->opcode = '1';
-	/*strcpy(packet->padding0,"");
-	strcpy(packet->pkglen,"12");
-	strcpy(packet->ipdst," ");
-	strcpy(packet->ipsrc," ");
-	strcpy(packet->srcport," ");
-	strcpy(packet->dstport," ");
-	strcpy(packet->clientid,' ');
+	packet->opcode = 1;
+	packet->padding0 = ' ';
+	packet->pkglen = 1;
+
+	packet->ipdst[0] = 0;
+	packet->ipdst[1] = 0;
+	packet->ipdst[2] = 0;
+	packet->ipdst[3] = 0;
+
+	packet->ipsrc[0] = 1;
+	packet->ipsrc[1] = 1;
+	packet->ipsrc[2] = 1;
+	packet->ipsrc[3] = 1;
+
+	packet->srcport = 5001;
+	packet->dstport = 5001;
+	/*strcpy(packet->clientid,' ');
 	strcpy(packet->crctype,' ');
 	strcpy(packet->padding1,"  ");
 	strcpy(packet->crc,"    ");*/

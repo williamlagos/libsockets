@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 
 	Header* head = (Header*) malloc(sizeof(Header));
 	header_packet(head);
-	send_socket(&socket,(Address*)&address,(Header*)head);
+	send_socket(&socket,(Address*)&address,(Header*)head,256);
 	recv_socket(&socket,(Address*)&address,(Header*)head,256);
 	printf("Recebido: %c\n",head->opcode);
 	close(socket);

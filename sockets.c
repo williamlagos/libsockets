@@ -120,11 +120,12 @@ void
 send_socket
 (int* socket_file,
  struct sockaddr* address,
- void* buffer)
+ void* buffer,
+ int buffer_size)
 {
 	int bytes = 0;
 	int socket = *socket_file;
 	socklen_t size = socket_size(address->sa_family);
-	bytes = sendto(socket,buffer,strlen(buffer),0,address,size);
+	bytes = sendto(socket,buffer,buffer_size,0,address,size);
 	if(bytes == -1) error("ERRO ao enviar para o soquete");
 }

@@ -20,7 +20,7 @@ int create_socket(int ip_version,int socket_type);
 int listen_socket(int* socket_file,struct sockaddr* address);
 void bind_socket(int* socket_file,struct sockaddr* address);
 void recv_socket(int* socket_file,struct sockaddr* address,void* buffer,int buffer_size);
-void send_socket(int* socket_file,struct sockaddr* address,void* buffer);
+void send_socket(int* socket_file,struct sockaddr* address,void* buffer,int buffer_size);
 void connect_socket(int* socket_file,struct sockaddr* address);
 struct sockaddr_in  ipv4_address(const char* address,int port_number);
 struct sockaddr_in6 ipv6_address(const char* address,int port_number);
