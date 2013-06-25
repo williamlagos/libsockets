@@ -33,6 +33,7 @@ typedef struct {
 	char data[2048];
 } Data;
 
+uint8_t crc_packet(uint8_t const *message);
 void header_packet(Header* packet,int opcode,IPV6_Address* addr_dst,IPV6_Address* addr_src,int port_num);
 void unpack_header(Header* packet,IPV6_Address* addr,int port_num);
 void connection_packet(Connection* packet,int connectype,int windowsize,char* filename);

@@ -17,6 +17,8 @@
 #define INVALID_WINDOWSIZE			0x80A
 #define INVALID_FILENAME			0x80B
 
+#define CRC_POLYNOM 0x296;
+
 #define ESTABLISHED 1
 #define REJECTED 2
 #define ERROR 4

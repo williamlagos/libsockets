@@ -2,6 +2,20 @@
 #include "sockets.h"
 #include "structs.h"
 
+uint8_t
+crc_packet(uint8_t const *message)
+{
+    uint8_t  remainder;	
+    remainder = *message;
+	uint8_t bit = 8;
+    while(bit > 0){
+        if (remainder & 0x80) remainder ^= CRC_POLYNOM;
+        remainder = (remainder << 1);
+		--bit;
+    }
+    return (remainder >> 4);
+}
+
 void		
 header_packet
 (Header* packet,
@@ -35,7 +49,11 @@ header_packet
 	packet->clientid = 0;
 	packet->crctype = 1;
 	packet->padding1 = ' ';
-	packet->crc = 0;
+	sprintf(message,"%d%d%s%s%d%d%d%d",
+	packet->opcode,packet->pkglen,(char*)&packet->ipsrc,(char*)&packet->ipdst,
+			packet->srcport,packet->dstport,packet->clientid,packet->crctype);
+	packet->crc = crc_packet((uint8_t*)&message);
+	printf("CRC: %d",packet->crc);
 	logto("DONE","Pacote cabecalho enviado");
 }
 
@@ -83,7 +101,11 @@ unpack_header
 	sprintf(message,"Selecionado o algoritmo CRC8 para controle de erros");
 	logto("INFO",message);
 	
-	//int crc = packet->crc;
+	sprintf(message,"%d%d%s%s%d%d%d%d",
+			packet->opcode,packet->pkglen,(char*)&packet->ipsrc,(char*)&packet->ipdst,
+			packet->srcport,packet->dstport,packet->clientid,packet->crctype);
+	packet->crc = crc_packet((uint8_t*)&message);
+	printf("CRC: %d",packet->crc);
 	logto("DONE","Pacote cabecalho recebido, preparando para subsequente");
 }
 
