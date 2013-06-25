@@ -143,23 +143,33 @@ data_packet
 (Data* packet,
  char* filename)
 {
+	char *buffer,message[256];
 	packet->seqnumber = 0;
-	FILE *fl = fopen(filename, "r");  
-    fseek(fl, 0, SEEK_END);  
-    long len = ftell(fl);
-    char *ret = malloc(len);  
+	logto("START","Lendo arquivo do disco em bytes");
+	FILE *fp = fopen(filename,"rb");
+	fseek(fp,0L,SEEK_END);
+	long len = ftell( fp );
 	packet->datalen = len;
-    fseek(fl, 0, SEEK_SET);  
-    fread(ret, 1, len, fl);  
-    fclose(fl);  
-	bcopy(ret,packet->data,len);
+	rewind(fp);
+	buffer = calloc(1,len+1);
+	fread(buffer,len,1,fp);
+	sprintf(message,"Lido do arquivo: %s",buffer);
+	logto("DONE",message);
+	strcpy(packet->data,buffer);
+	fclose(fp);
 }
 
 void
 unpack_data
-(Data* packet)
+(Data* packet,
+ char* filename)
 {
-	FILE* file = fopen("saida.txt","wb");
-	fwrite(packet->data,1,2048,file);
+	char message[256];
+	logto("START","Recebendo o arquivo e gravando em disco");
+	FILE* file = fopen(filename,"wb");
+	fwrite(packet->data,sizeof(char),sizeof(packet->data),file);
+	sprintf(message,"Lido do socket: %s",packet->data);
+	logto("INFO",message);
+	fclose(file);
 	logto("DONE","Arquivo recebido com sucesso em saida.txt");
 }

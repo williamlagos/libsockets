@@ -30,7 +30,7 @@ typedef struct {
 	uint32_t seqnumber;
 	uint16_t datalen;
 	int16_t padding;
-	uint8_t data[2048];
+	char data[2048];
 } Data;
 
 void header_packet(Header* packet,int opcode,IPV6_Address* addr_dst,IPV6_Address* addr_src,int port_num);
@@ -40,4 +40,4 @@ void unpack_connection(Connection* packet,IPV6_Address* addr,int port_num);
 void confimation_packet(Confirmation* packet,int confirmationcode,int sequencenumber);
 void unpack_confirmation(Confirmation* packet,IPV6_Address* addr,int port_num);
 void data_packet(Data* packet,char* filename);
-void unpack_data(Data* packet);
+void unpack_data(Data* packet,char* filename);

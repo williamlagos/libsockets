@@ -29,7 +29,7 @@ int main(int argc, char** argv)
 			// Pacote de Dados
 			recv_socket(&socket,(Address*)&address,buffer,sizeof(Data));
 			Data* data = (Data*) buffer;
-			unpack_data(data);
+			unpack_data(data,"saida.txt");
 		}
 		//send_socket(&socket,(Address*)&address,buffer,256);
 	}
