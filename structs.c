@@ -53,7 +53,8 @@ header_packet
 	packet->opcode,packet->pkglen,(char*)&packet->ipsrc,(char*)&packet->ipdst,
 			packet->srcport,packet->dstport,packet->clientid,packet->crctype);
 	packet->crc = crc_packet((uint8_t*)&message);
-	printf("CRC: %d",packet->crc);
+	sprintf(message,"CRC Calculado: %d",packet->crc);
+	logto("INFO",message);
 	logto("DONE","Pacote cabecalho enviado");
 }
 
@@ -105,7 +106,8 @@ unpack_header
 			packet->opcode,packet->pkglen,(char*)&packet->ipsrc,(char*)&packet->ipdst,
 			packet->srcport,packet->dstport,packet->clientid,packet->crctype);
 	packet->crc = crc_packet((uint8_t*)&message);
-	printf("CRC: %d",packet->crc);
+	sprintf(message,"CRC Calculado: %d",packet->crc);
+	logto("INFO",message);
 	logto("DONE","Pacote cabecalho recebido, preparando para subsequente");
 }
 
