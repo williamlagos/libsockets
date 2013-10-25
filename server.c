@@ -5,7 +5,7 @@
 int main(int argc, char** argv)
 {
 	if(argc < 2) error("Uso: server porta\n");
-	int socket = create_socket(IPV4,UDP);
+	int socket = create_socket(IPV4,UDP,DEFAULT);
 	IPV6_Address address = ipv6_address("",atoi(argv[1]));
 	bind_socket(&socket,(Address*)&address);
 	void* buffer = (void*) malloc(256);

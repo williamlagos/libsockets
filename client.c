@@ -5,7 +5,7 @@
 int main(int argc, char **argv)
 {
 	if(argc < 3) error("Uso: client hostname porta\n");
-	int socket = create_socket(IPV4,UDP);
+	int socket = create_socket(IPV6,UDP,DEFAULT);
 	IPV6_Address address = ipv6_address(argv[1],atoi(argv[2]));
 	IPV6_Address client_address = ipv6_address("",atoi(argv[2]));
 	bind_socket(&socket,(Address*)&client_address);

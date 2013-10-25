@@ -8,14 +8,18 @@
 
 #define IPV6 AF_INET6
 #define IPV4 AF_INET
+#define PACKET AF_PACKET
+#define RAW SOCK_RAW
 #define UDP SOCK_DGRAM
 #define TCP SOCK_STREAM
+#define DEFAULT 0
+#define ETH ETH_P_ALL
 
 typedef struct sockaddr Address;
 typedef struct sockaddr_in6 IPV6_Address;
 
 int socket_size(int ip_version);
-int create_socket(int ip_version,int socket_type);
+int create_socket(int ip_version,int socket_type,int socket_protocol);
 int listen_socket(int* socket_file,struct sockaddr* address);
 void bind_socket(int* socket_file,struct sockaddr* address);
 void recv_socket(int* socket_file,struct sockaddr* address,void* buffer,int buffer_size);

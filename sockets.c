@@ -30,7 +30,7 @@ socket_size
 }
 
 int 
-create_socket(int ip_version,int socket_type)
+create_socket(int ip_version,int socket_type,int socket_protocol)
 {
 	int socket_file;
 	socket_file = socket(ip_version,socket_type,0);
