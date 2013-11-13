@@ -1,10 +1,16 @@
+#ifndef WIN32
 #include<unistd.h>
-#include<string.h>
-
 #include<sys/types.h>
 #include<sys/socket.h>
 #include<netinet/in.h>
 #include<netdb.h>
+#else
+#include <io.h>
+#include <ws2tcpip.h>
+#include <winsock2.h>
+#include <windows.h>
+#endif
+#include<string.h>
 
 #define IPV6 AF_INET6
 #define IPV4 AF_INET
