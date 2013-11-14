@@ -48,7 +48,6 @@ ipv4_address
 	bzero((char *) &serv_addr, sizeof(serv_addr));
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_port = htons(port_number);
-	struct sockaddr_in sa;
 	if(strlen(ip_address) != 0) 
 		inet_pton(AF_INET,ip_address,&(serv_addr.sin_addr));
 	else serv_addr.sin_addr.s_addr = INADDR_ANY;
@@ -79,33 +78,33 @@ ipv6_address
 
 void
 connect_socket
-(int* socket_file,
+(SOCKET socket_file,
  struct sockaddr* address)
 {
 	int status = -1;
-	int f = *socket_file;
+	int f = socket_file;
 	status = connect(f,address,socket_size(address->sa_family));
 	if(status < 0) error("ERRO ao conectar");
 }
 
 void
 bind_socket
-(int* socket_file,
+(SOCKET socket_file,
  struct sockaddr* address)
 {
-	int socket = *socket_file;
+	int sock = socket_file;
 	int size = socket_size(address->sa_family);
-	if(bind(socket,address,size) > 1)
+	if(bind(sock,address,size) > 1)
 		error("ERRO ao ligar o socket ao hostname");
 }
 
 int
 listen_socket
-(int* socket_file,
+(SOCKET socket_file,
  struct sockaddr* address)
 {
 	int newsocket;
-	int socket = *socket_file;
+	int socket = socket_file;
 	socklen_t size = socket_size(address->sa_family);
 	bind_socket(socket_file,address);
 	listen(socket,5);
@@ -116,13 +115,13 @@ listen_socket
  
 void
 recv_socket
-(int* socket_file,
+(SOCKET socket_file,
  struct sockaddr* address,
  void* buffer,
  int buffer_size)
 {
 	int bytes = 0;
-	int socket = *socket_file;
+	int socket = socket_file;
 	socklen_t size = socket_size(address->sa_family);
 	bytes = recvfrom(socket,buffer,buffer_size,0,address,&size);
 	if(bytes == -1) error("ERRO ao receber do soquete");
@@ -130,12 +129,12 @@ recv_socket
 
 void
 send_socket
-(int* socket_file,
+(SOCKET socket_file,
  struct sockaddr* address,
  void* buffer)
 {
 	int bytes = 0;
-	int socket = *socket_file;
+	int socket = socket_file;
 	socklen_t size = socket_size(address->sa_family);
 	bytes = sendto(socket,buffer,strlen(buffer),0,address,size);
 	if(bytes == -1) error("ERRO ao enviar para o soquete");

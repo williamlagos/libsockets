@@ -6,10 +6,10 @@
 #include<netdb.h>
 #define SOCKET int
 #else
-#include <io.h>
-#include <ws2tcpip.h>
-#include <winsock2.h>
-#include <windows.h>
+#include<io.h>
+#include<ws2tcpip.h>
+#include<winsock2.h>
+#include<windows.h>
 #pragma comment(lib, "ws2_32.lib")
 #endif
 #include<string.h>
@@ -31,10 +31,10 @@ typedef struct sockaddr_in6 IPV6_Address;
 
 int socket_size(int ip_version);
 int create_socket(int ip_version,int socket_type,int socket_protocol);
-int listen_socket(int* socket_file,struct sockaddr* address);
-void bind_socket(int* socket_file,struct sockaddr* address);
-void recv_socket(int* socket_file,struct sockaddr* address,void* buffer,int buffer_size);
-void send_socket(int* socket_file,struct sockaddr* address,void* buffer);
-void connect_socket(int* socket_file,struct sockaddr* address);
+int listen_socket(SOCKET socket_file,struct sockaddr* address);
+void bind_socket(SOCKET socket_file,struct sockaddr* address);
+void recv_socket(SOCKET socket_file,struct sockaddr* address,void* buffer,int buffer_size);
+void send_socket(SOCKET socket_file,struct sockaddr* address,void* buffer);
+void connect_socket(SOCKET socket_file,struct sockaddr* address);
 struct sockaddr_in  ipv4_address(const char* host_name,int port_number);
 struct sockaddr_in6 ipv6_address(const char* host_name,int port_number);
