@@ -26,6 +26,7 @@
 #define ETH ETH_P_ALL
 
 typedef struct sockaddr Address;
+typedef struct sockaddr_in  IPV4_Address;
 typedef struct sockaddr_in6 IPV6_Address;
 
 int socket_size(int ip_version);

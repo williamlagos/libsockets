@@ -41,22 +41,17 @@ create_socket(int ip_version,int socket_type,int socket_protocol)
 struct
 sockaddr_in
 ipv4_address
-(const char* host_name,
+(const char* ip_address,
  int port_number)
 {
 	struct sockaddr_in serv_addr;
 	bzero((char *) &serv_addr, sizeof(serv_addr));
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_port = htons(port_number);
-	if(strlen(host_name) != 0){
-		#ifndef WIN32
-		struct hostent *s = gethostbyname2(host_name,AF_INET);
-		#else
-		struct hostent *s = gethostbyname(host_name);
-		#endif
-		if(s == NULL) error("ERRO, nenhum host encontrado\n");
-		bcopy((char*)s->h_addr,(char*)&serv_addr.sin_addr.s_addr,s->h_length);
-	}else serv_addr.sin_addr.s_addr = INADDR_ANY;
+	struct sockaddr_in sa;
+	if(strlen(ip_address) != 0) 
+		inet_pton(AF_INET,ip_address,&(serv_addr.sin_addr));
+	else serv_addr.sin_addr.s_addr = INADDR_ANY;
 	return serv_addr;
 }
 
