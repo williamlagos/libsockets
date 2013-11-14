@@ -4,6 +4,9 @@
 #include<sys/socket.h>
 #include<netinet/in.h>
 #include<netdb.h>
+#include<fcntl.h>
+#define ULONG unsigned long
+#define FIONBIO O_NONBLOCK
 #define SOCKET int
 #else
 #include<io.h>

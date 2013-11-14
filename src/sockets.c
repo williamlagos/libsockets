@@ -35,6 +35,16 @@ create_socket(int ip_version,int socket_type,int socket_protocol)
 	int socket_file;
 	socket_file = socket(ip_version,socket_type,0);
 	if(socket_file < 0) error("ERRO ao tentar abrir o soquete");
+	#ifdef WIN32
+	ULONG yes = 1;
+	ioctlsocket(sock, FIONBIO, &yes);
+	#else
+	int blocking = TRUE;
+	int flags = fcntl(socket_file, F_GETFL, 0);
+	if (flags < 0) error("ERRO ao desbloquear o soquete");
+	flags = blocking ? (flags&~O_NONBLOCK) : (flags|O_NONBLOCK);
+	fcntl(socket_file, F_SETFL, flags);
+	#endif
 	return socket_file;
 }
 
