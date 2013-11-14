@@ -4,14 +4,18 @@
 
 int main(int argc, char** argv)
 {
+	SOCKET socket;
+	void* buffer;
+	Header* head;
+	IPV6_Address address;
 	if(argc < 2) error("Uso: server porta\n");
-	int socket = create_socket(IPV4,UDP,DEFAULT);
-	IPV6_Address address = ipv6_address("",atoi(argv[1]));
+	socket = create_socket(IPV4,UDP,DEFAULT);
+	address = ipv6_address("",atoi(argv[1]));
 	bind_socket(&socket,(Address*)&address);
-	void* buffer = (void*) malloc(256);
+	buffer = (void*) malloc(256);
 	while(1){
 		recv_socket(&socket,(Address*)&address,buffer,256);
-		Header* head = (Header*) buffer;
+		head = (Header*) buffer;
 		printf("Mensagem lida: %c\n",head->opcode);
 		send_socket(&socket,(Address*)&address,buffer);
 	}

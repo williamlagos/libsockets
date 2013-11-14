@@ -4,14 +4,18 @@
 #include<sys/socket.h>
 #include<netinet/in.h>
 #include<netdb.h>
+#define SOCKET int
 #else
 #include <io.h>
 #include <ws2tcpip.h>
 #include <winsock2.h>
 #include <windows.h>
+#pragma comment(lib, "ws2_32.lib")
 #endif
 #include<string.h>
 
+#define bzero(b,len) (memset((b), '\0', (len)), (void) 0)  
+#define bcopy(b1,b2,len) (memmove((b2), (b1), (len)), (void) 0)
 #define IPV6 AF_INET6
 #define IPV4 AF_INET
 #define PACKET AF_PACKET

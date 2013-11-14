@@ -49,7 +49,11 @@ ipv4_address
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_port = htons(port_number);
 	if(strlen(host_name) != 0){
+		#ifndef WIN32
 		struct hostent *s = gethostbyname2(host_name,AF_INET);
+		#else
+		struct hostent *s = gethostbyname(host_name);
+		#endif
 		if(s == NULL) error("ERRO, nenhum host encontrado\n");
 		bcopy((char*)s->h_addr,(char*)&serv_addr.sin_addr.s_addr,s->h_length);
 	}else serv_addr.sin_addr.s_addr = INADDR_ANY;
@@ -67,7 +71,11 @@ ipv6_address
 	serv_addr.sin6_family = AF_INET6;
 	serv_addr.sin6_port = htons(port_number);
 	if(strlen(host_name) != 0){
+		#ifndef WIN32
 		struct hostent *s = gethostbyname2(host_name,AF_INET6);
+		#else
+		struct hostent *s = gethostbyname(host_name);
+		#endif
 		if(s == NULL) error("ERRO, nenhum host encontrado\n");
 		bcopy((char*)s->h_addr,(char*)&serv_addr.sin6_addr.s6_addr,s->h_length);
 	}else serv_addr.sin6_addr = in6addr_any;
@@ -101,11 +109,12 @@ listen_socket
 (int* socket_file,
  struct sockaddr* address)
 {
+	int newsocket;
 	int socket = *socket_file;
 	socklen_t size = socket_size(address->sa_family);
 	bind_socket(socket_file,address);
 	listen(socket,5);
-	int newsocket = accept(socket,(struct sockaddr*)malloc(size),&size);
+	newsocket = accept(socket,(struct sockaddr*)malloc(size),&size);
 	if(newsocket < 0) error("ERRO ao aceitar a conexao com o cliente");
 	return newsocket;
 }

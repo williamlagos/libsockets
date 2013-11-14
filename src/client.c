@@ -4,10 +4,13 @@
 
 int main(int argc, char **argv)
 {
+	SOCKET socket;
+	Header* head;
+	IPV6_Address address,client_address;
 	if(argc < 3) error("Uso: client hostname porta\n");
-	int socket = create_socket(IPV6,UDP,DEFAULT);
-	IPV6_Address address = ipv6_address(argv[1],atoi(argv[2]));
-	IPV6_Address client_address = ipv6_address("",atoi(argv[2]));
+	socket = create_socket(IPV6,UDP,DEFAULT);
+	address = ipv6_address(argv[1],atoi(argv[2]));
+	client_address = ipv6_address("",atoi(argv[2]));
 	bind_socket(&socket,(Address*)&client_address);
 	
 	/*char* buffer = read_input(256);
@@ -19,7 +22,7 @@ int main(int argc, char **argv)
 	write(socket,buffer,255);
 	read(socket,buffer,255);*/
 
-	Header* head = (Header*) malloc(sizeof(Header));
+	head = (Header*) malloc(sizeof(Header));
 	head->opcode = 'A';
 	//head_packet(head);
 	send_socket(&socket,(Address*)&address,(Header*)head);
