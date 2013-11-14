@@ -2,9 +2,15 @@
 #include "sockets.h"
 #include "structs.h"
 
+void receive_word(char* word)
+{
+	printf("AAAA%s",word);
+}
+
 int main(int argc, char** argv)
 {
 	SOCKET socket,newsocket;
+	int client_count;
 	void* buffer;
 	Header* head;
 	IPV4_Address address;
@@ -19,10 +25,15 @@ int main(int argc, char** argv)
 		printf("Mensagem lida: %c\n",head->opcode);
 		send_socket(&socket,(Address*)&address,buffer);
 	}*/
-	newsocket = listen_socket(
-	socket,(struct sockaddr*)&address);
-	read(newsocket,buffer,255);
-	write(newsocket,buffer,255);
+	forever{
+		newsocket = listen_socket(
+		socket,(struct sockaddr*)&address);
+		client_count += 1;
+		printf("Client %d connected",client_count);
+		read(newsocket,buffer,255);
+		receive_word((char*)buffer);
+		write(newsocket,buffer,255);
+	}
 	close(newsocket);
 	close(socket);
 	return 0;
