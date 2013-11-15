@@ -17,7 +17,6 @@ int main(int argc, char **argv)
 
 	forever{	
 		memset(buffer,' ',DEFAULT_SIZE);
-		puts("Client restart");
 		buffer = read_input(DEFAULT_SIZE);
 		write(socket,buffer,DEFAULT_SIZE);
 		read(socket,buffer,DEFAULT_SIZE);

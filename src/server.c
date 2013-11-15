@@ -35,7 +35,6 @@ int main(int argc, char** argv)
 	is_terminated = FALSE;
 	forever{
 		memset(buffer,' ',DEFAULT_SIZE);
-		puts("Server restart");
 		read(man_socket,buffer,DEFAULT_SIZE);
 		read_command((char*)buffer);	
 		if(is_terminated == TRUE) break;

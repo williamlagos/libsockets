@@ -5,6 +5,8 @@
 #include<netinet/in.h>
 #include<netdb.h>
 #include<fcntl.h>
+#include<ifaddrs.h>
+#include<arpa/inet.h>
 #define ULONG unsigned long
 #define FIONBIO O_NONBLOCK
 #define SOCKET int
