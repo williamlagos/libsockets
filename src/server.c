@@ -1,16 +1,17 @@
 #include"server.h"
 
-void enter_onserver()
+void enter_onserver(char* cmd)
 {
 	clients_count += 1;
-	sprintf(buffer,"Client %d connected",clients_count);
+	printf("%s",(char*)buffer);
+	sprintf(buffer,"Client %d connected, %s",clients_count,(char*)buffer);
 	write(man_socket,buffer,DEFAULT_SIZE);
 }
 
 void read_command(char* cmd)
 {
 	if(strstr(cmd,"terminate") != NULL) is_terminated = TRUE;
-	else if(strstr(cmd,"enter") != NULL) enter_onserver();
+	else if(strstr(cmd,"enter") != NULL) enter_onserver((char*)buffer);
 	else write(man_socket,"Invalid command",DEFAULT_SIZE);
 }
 

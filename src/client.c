@@ -6,6 +6,7 @@ int main(int argc, char **argv)
 {
 	if(argc < 3) error("Uso: client hostname porta\n");
 	void* buffer = (char*) malloc(DEFAULT_SIZE);
+	char address_str[INET_ADDRSTRLEN];
 	IPV4_Address address,client_address;
 	SOCKET socket;
 
@@ -18,6 +19,8 @@ int main(int argc, char **argv)
 	forever{	
 		memset(buffer,' ',DEFAULT_SIZE);
 		buffer = read_input(DEFAULT_SIZE);
+		get_ipv4_address(address_str);
+		sprintf(buffer,"%s %s",(char*)buffer,address_str);
 		write(socket,buffer,DEFAULT_SIZE);
 		read(socket,buffer,DEFAULT_SIZE);
 		printf("%s\n",(char*)buffer);

@@ -30,6 +30,11 @@
 #define DEFAULT 0
 #define ETH ETH_P_ALL
 
+
+struct ifaddrs* ifAddrStruct;
+struct ifaddrs* ifa;
+void* tmpAddrPtr;
+
 typedef struct sockaddr Address;
 typedef struct sockaddr_in  IPV4_Address;
 typedef struct sockaddr_in6 IPV6_Address;
@@ -43,3 +48,5 @@ void send_socket(SOCKET socket_file,struct sockaddr* address,void* buffer);
 void connect_socket(SOCKET socket_file,struct sockaddr* address);
 struct sockaddr_in  ipv4_address(const char* host_name,int port_number);
 struct sockaddr_in6 ipv6_address(const char* host_name,int port_number);
+void get_ipv4_address(char* address);
+void get_ipv6_address(char* address);
