@@ -4,26 +4,26 @@
 
 int main(int argc, char **argv)
 {
-	Header* head;
-	SOCKET socket;
-	char* buffer = (char*) malloc(256);
-	IPV4_Address address,client_address;
 	if(argc < 3) error("Uso: client hostname porta\n");
+	void* buffer = (char*) malloc(DEFAULT_SIZE);
+	IPV4_Address address,client_address;
+	SOCKET socket;
+
 	socket = create_socket(IPV4,TCP,DEFAULT);
 	address = ipv4_address(argv[1],atoi(argv[2]));
 	client_address = ipv4_address("",atoi(argv[2]));
 	bind_socket(socket,(Address*)&client_address);
-	
-	buffer = read_input(256);
 	connect_socket(socket,(Address*)&address);
-	write(socket,buffer,255);
-	read(socket,buffer,255);
-	printf("Recebido:%s",buffer);
 
-	/*head = (Header*) malloc(sizeof(Header));
-	send_socket(&socket,(Address*)&address,(Header*)head);
-	recv_socket(&socket,(Address*)&address,(Header*)head,256);
-	printf("Recebido: %c\n",head->opcode);*/
+	forever{	
+		memset(buffer,' ',DEFAULT_SIZE);
+		puts("Client restart");
+		buffer = read_input(DEFAULT_SIZE);
+		write(socket,buffer,DEFAULT_SIZE);
+		read(socket,buffer,DEFAULT_SIZE);
+		printf("%s\n",(char*)buffer);
+		if(strstr((char*)buffer,"Terminated")) break;
+	}
 	close(socket);
 	return 0;
 }
