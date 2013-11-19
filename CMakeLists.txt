@@ -3,7 +3,6 @@ project(sockets)
 
 include_directories(include)
 set(SOCKETS_SOURCES 
-${CMAKE_CURRENT_DIR}src/structs.c 
 ${CMAKE_CURRENT_DIR}src/sockets.c)
 
 add_library(sockets-static STATIC ${SOCKETS_SOURCES})

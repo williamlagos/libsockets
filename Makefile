@@ -231,33 +231,6 @@ src/sockets.c.s:
 	$(MAKE) -f CMakeFiles/sockets-static.dir/build.make CMakeFiles/sockets-static.dir/src/sockets.c.s
 .PHONY : src/sockets.c.s
 
-src/structs.o: src/structs.c.o
-.PHONY : src/structs.o
-
-# target to build an object file
-src/structs.c.o:
-	$(MAKE) -f CMakeFiles/sockets.dir/build.make CMakeFiles/sockets.dir/src/structs.c.o
-	$(MAKE) -f CMakeFiles/sockets-static.dir/build.make CMakeFiles/sockets-static.dir/src/structs.c.o
-.PHONY : src/structs.c.o
-
-src/structs.i: src/structs.c.i
-.PHONY : src/structs.i
-
-# target to preprocess a source file
-src/structs.c.i:
-	$(MAKE) -f CMakeFiles/sockets.dir/build.make CMakeFiles/sockets.dir/src/structs.c.i
-	$(MAKE) -f CMakeFiles/sockets-static.dir/build.make CMakeFiles/sockets-static.dir/src/structs.c.i
-.PHONY : src/structs.c.i
-
-src/structs.s: src/structs.c.s
-.PHONY : src/structs.s
-
-# target to generate assembly for a file
-src/structs.c.s:
-	$(MAKE) -f CMakeFiles/sockets.dir/build.make CMakeFiles/sockets.dir/src/structs.c.s
-	$(MAKE) -f CMakeFiles/sockets-static.dir/build.make CMakeFiles/sockets-static.dir/src/structs.c.s
-.PHONY : src/structs.c.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -279,9 +252,6 @@ help:
 	@echo "... src/sockets.o"
 	@echo "... src/sockets.i"
 	@echo "... src/sockets.s"
-	@echo "... src/structs.o"
-	@echo "... src/structs.i"
-	@echo "... src/structs.s"
 .PHONY : help
 
 

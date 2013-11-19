@@ -1,11 +1,13 @@
-#include "utils.h"
+#include "app.h"
 #include "sockets.h"
-#include "structs.h"
+
+SOCKET man_socket;
 
 int main(int argc, char **argv)
 {
 	if(argc < 3) error("Uso: client hostname porta\n");
-	void* buffer = (char*) malloc(DEFAULT_SIZE);
+	buffer = (DATA*) malloc(DEFAULT_SIZE);
+	char* buffers_str = (char*) malloc(MESSAGE_SIZE);
 	char address_str[INET_ADDRSTRLEN];
 	IPV4_Address address,client_address;
 	SOCKET socket;
@@ -17,13 +19,17 @@ int main(int argc, char **argv)
 	connect_socket(socket,(Address*)&address);
 
 	forever{	
-		memset(buffer,' ',DEFAULT_SIZE);
-		buffer = read_input(DEFAULT_SIZE);
+		//memset(buffer,' ',DEFAULT_SIZE);
+		buffers_str = read_input(MESSAGE_SIZE);
+		if(strstr(buffers_str,"exit")) break;
 		get_ipv4_address(address_str);
-		sprintf(buffer,"%s %s",(char*)buffer,address_str);
+		strcpy(buffer->command,buffers_str);
+		strcpy(buffer->address,address_str);
+		strcpy(buffer->options," ");
+		strcpy(buffer->results," ");
 		write(socket,buffer,DEFAULT_SIZE);
 		read(socket,buffer,DEFAULT_SIZE);
-		printf("%s\n",(char*)buffer);
+		printf("%s\n",buffer->results);
 		if(strstr((char*)buffer,"Terminated")) break;
 	}
 	close(socket);
