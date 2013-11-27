@@ -5,6 +5,8 @@
 #include<netinet/in.h>
 #include<netdb.h>
 #include<fcntl.h>
+#include<ifaddrs.h>
+#include<arpa/inet.h>
 #define ULONG unsigned long
 #define FIONBIO O_NONBLOCK
 #define SOCKET int
@@ -15,6 +17,9 @@
 #include<windows.h>
 #pragma comment(lib, "ws2_32.lib")
 #endif
+
+#include<stdio.h>
+#include<stdlib.h>
 #include<string.h>
 
 #define bzero(b,len) (memset((b), '\0', (len)), (void) 0)  
@@ -27,6 +32,14 @@
 #define TCP SOCK_STREAM
 #define DEFAULT 0
 #define ETH ETH_P_ALL
+#define forever while(1)
+#define TRUE 1
+#define FALSE 0
+#define BOOL int
+
+struct ifaddrs* ifAddrStruct;
+struct ifaddrs* ifa;
+void* tmpAddrPtr;
 
 typedef struct sockaddr Address;
 typedef struct sockaddr_in  IPV4_Address;
@@ -41,3 +54,7 @@ void send_socket(SOCKET socket_file,struct sockaddr* address,void* buffer);
 void connect_socket(SOCKET socket_file,struct sockaddr* address);
 struct sockaddr_in  ipv4_address(const char* host_name,int port_number);
 struct sockaddr_in6 ipv6_address(const char* host_name,int port_number);
+void get_ipv4_address(char* address);
+void get_ipv6_address(char* address);
+void error(const char *msg);
+char* read_input(int buffer_size);

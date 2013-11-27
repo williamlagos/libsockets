@@ -1,4 +1,3 @@
-#include"utils.h"
 #include"sockets.h"
 
 void 
@@ -18,6 +17,36 @@ read_input
 	bzero(buffer,buffer_size-1);
 	fgets(buffer,buffer_size-1,stdin);
 	return buffer;
+}
+
+void
+get_ipv4_address(char* address)
+{
+	char addressBuffer[INET_ADDRSTRLEN];
+	getifaddrs(&ifAddrStruct);
+	for (ifa = ifAddrStruct; ifa != NULL; ifa = ifa->ifa_next) {
+		if (ifa ->ifa_addr->sa_family==AF_INET) {
+			tmpAddrPtr=&((struct sockaddr_in *)ifa->ifa_addr)->sin_addr;
+			inet_ntop(AF_INET, tmpAddrPtr, addressBuffer, INET_ADDRSTRLEN);
+			strcpy(address,addressBuffer); 
+		}
+	}
+	freeifaddrs(ifAddrStruct);
+}
+
+void
+get_ipv6_address(char* address)
+{
+	char addressBuffer[INET6_ADDRSTRLEN];
+	getifaddrs(&ifAddrStruct);
+	for (ifa = ifAddrStruct; ifa != NULL; ifa = ifa->ifa_next) {
+		if (ifa->ifa_addr->sa_family==AF_INET6) {
+			tmpAddrPtr=&((struct sockaddr_in6 *)ifa->ifa_addr)->sin6_addr;
+			inet_ntop(AF_INET6, tmpAddrPtr, addressBuffer, INET6_ADDRSTRLEN);
+			strcpy(address,addressBuffer); 
+		}
+	} 
+	freeifaddrs(ifAddrStruct);
 }
 
 int
