@@ -36,8 +36,7 @@ create_socket(int ip_version,int socket_type,int socket_protocol)
 	socket_file = socket(ip_version,socket_type,0);
 	if(socket_file < 0) error("ERRO ao tentar abrir o soquete");
 	#ifdef WIN32
-	ULONG yes = 1;
-	ioctlsocket(sock, FIONBIO, &yes);
+	ioctlsocket(socket_file, FIONBIO,(u_long*)(1));
 	#else
 	int blocking = TRUE;
 	int flags = fcntl(socket_file, F_GETFL, 0);
