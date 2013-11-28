@@ -42,20 +42,8 @@ typedef int socklen_t;
 #define _WIN32_WINNT OLD_WIN32_WINNT
 #endif
 #endif
-
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-
-namespace networking{
-	enum TransportProtocol{
-		UDP = IPPROTO_UDP, /**< UDP protocol. */
-		TCP = IPPROTO_TCP /**< TCP protocol. */
-	};
-	bool init();
-	void cleanup();
-	int connect(enum TransportProtocol protocol, const char* address, uint16_t port, struct sockaddr_storage* sockaddr, socklen_t* addrlen);
-	int bind(enum TransportProtocol protocol, const char* address, uint16_t port, struct sockaddr_storage* sockaddr, socklen_t* addrlen);
-}
+#ifdef _WIN32
+static WSAData wsaData;
+#endif
 #endif
 

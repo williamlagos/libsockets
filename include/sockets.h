@@ -1,22 +1,4 @@
-#ifndef WIN32
-#include<unistd.h>
-#include<sys/types.h>
-#include<sys/socket.h>
-#include<netinet/in.h>
-#include<netdb.h>
-#include<fcntl.h>
-#include<ifaddrs.h>
-#include<arpa/inet.h>
-#define ULONG unsigned long
-#define FIONBIO O_NONBLOCK
-#define SOCKET int
-#else
-#include<io.h>
-#include<ws2tcpip.h>
-#include<winsock2.h>
-#include<windows.h>
-#pragma comment(lib, "ws2_32.lib")
-#endif
+#include"compat.h"
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -36,6 +18,7 @@
 #define TRUE 1
 #define FALSE 0
 #define BOOL int
+#define PROTO int
 
 struct ifaddrs* ifAddrStruct;
 struct ifaddrs* ifa;
@@ -58,3 +41,8 @@ void get_ipv4_address(char* address);
 void get_ipv6_address(char* address);
 void error(const char *msg);
 char* read_input(int buffer_size);
+
+BOOL init();
+void cleanup();
+SOCKET connect(PROTO protocol, const char* address, uint16_t port, struct sockaddr_storage* sockaddr, socklen_t* addrlen);
+SOCKET bind(PROTO protocol, const char* address, uint16_t port, struct sockaddr_storage* sockaddr, socklen_t* addrlen);
