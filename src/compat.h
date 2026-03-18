@@ -8,7 +8,10 @@
 #include <unistd.h>
 #include <netinet/in.h>
 #include <netdb.h>
+#include <arpa/inet.h>
+#include <ifaddrs.h>
 #include <fcntl.h>
+typedef int SOCKET;
 #define SPRINTF sprintf
 #define ULONG unsigned long
 #define FIONBIO O_NONBLOCK

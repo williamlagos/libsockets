@@ -21,7 +21,7 @@ cleanup()
 }
 
 int 
-connect
+compat_connect
 (PROTO protocol,
  const char* address,
  uint16_t port,
@@ -33,7 +33,7 @@ connect
 	struct addrinfo* p = NULL;
 	char service[8];
 	int sock = -1;
-	if(!port || address == "") return -1;
+	if(!port || !address || address[0] == '\0') return -1;
 
 	snprintf(service, sizeof(service), "%u", port);
 	service[sizeof(service)-1] = 0x00;
@@ -66,7 +66,7 @@ connect
 }
 
 int 
-bind
+compat_bind
 (PROTO protocol, 
  const char* address, 
  uint16_t port, 
@@ -79,7 +79,7 @@ bind
 	char service[8];
 	int sock = -1;
 
-	if(!port || address == "") return -1;
+	if(!port || !address || address[0] == '\0') return -1;
 
 	snprintf(service, sizeof(service), "%u", port);
 	service[sizeof(service)-1] = 0x00;
@@ -95,17 +95,19 @@ bind
 	for(p = res ; p ; p = p->ai_next){
 		int on = 1;
 		sock = socket(p->ai_family,p->ai_socktype,p->ai_protocol);
-		#ifdef WIN32
-		ULONG yes = 1;
-		ioctlsocket(sock, FIONBIO, &yes);
-		#else
-		bool blocking = true;
-		int flags = fcntl(sock, F_GETFL, 0);
-		if (flags < 0) return false;
-		flags = blocking ? (flags&~O_NONBLOCK) : (flags|O_NONBLOCK);
-		return (fcntl(sock, F_SETFL, flags) == 0) ? true : false;
-		#endif
 		if(sock == -1) continue;
+		#ifdef _WIN32
+		{
+			ULONG yes = 1;
+			ioctlsocket(sock, FIONBIO, &yes);
+		}
+		#else
+		{
+			int flags = fcntl(sock, F_GETFL, 0);
+			if(flags >= 0)
+				fcntl(sock, F_SETFL, flags & ~O_NONBLOCK);
+		}
+		#endif
 
 		#ifndef _WIN32
 		setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(int));
@@ -115,8 +117,8 @@ bind
 		on = 0;
 		#endif
 
-		if(::bind(sock,p->ai_addr,p->ai_addrlen) == -1){
-			::close(sock);
+		if(bind(sock,p->ai_addr,p->ai_addrlen) == -1){
+			close(sock);
 			sock = -1;
 			continue;
 		}

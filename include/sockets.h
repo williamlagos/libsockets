@@ -1,3 +1,6 @@
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
 #include"compat.h"
 
 #include<stdio.h>
@@ -20,9 +23,9 @@
 #define BOOL int
 #define PROTO int
 
-struct ifaddrs* ifAddrStruct;
-struct ifaddrs* ifa;
-void* tmpAddrPtr;
+extern struct ifaddrs* ifAddrStruct;
+extern struct ifaddrs* ifa;
+extern void* tmpAddrPtr;
 
 typedef struct sockaddr Address;
 typedef struct sockaddr_in  IPV4_Address;
@@ -44,5 +47,5 @@ char* read_input(int buffer_size);
 
 BOOL init();
 void cleanup();
-SOCKET connect(PROTO protocol, const char* address, uint16_t port, struct sockaddr_storage* sockaddr, socklen_t* addrlen);
-SOCKET bind(PROTO protocol, const char* address, uint16_t port, struct sockaddr_storage* sockaddr, socklen_t* addrlen);
+SOCKET compat_connect(PROTO protocol, const char* address, uint16_t port, struct sockaddr_storage* sockaddr, socklen_t* addrlen);
+SOCKET compat_bind(PROTO protocol, const char* address, uint16_t port, struct sockaddr_storage* sockaddr, socklen_t* addrlen);
