@@ -1,5 +1,9 @@
 #include"sockets.h"
 
+struct ifaddrs* ifAddrStruct;
+struct ifaddrs* ifa;
+void* tmpAddrPtr;
+
 void 
 error
 (const char *msg)
@@ -109,7 +113,7 @@ ipv6_address
 		struct hostent *s = gethostbyname(host_name);
 		#endif
 		if(s == NULL) error("ERRO, nenhum host encontrado\n");
-		bcopy((char*)s->h_addr,(char*)&serv_addr.sin6_addr.s6_addr,s->h_length);
+		bcopy((char*)s->h_addr_list[0],(char*)&serv_addr.sin6_addr.s6_addr,s->h_length);
 	}else serv_addr.sin6_addr = in6addr_any;
 	return serv_addr;
 }
