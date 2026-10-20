@@ -7,8 +7,12 @@
 #include<stdlib.h>
 #include<string.h>
 
-#define bzero(b,len) (memset((b), '\0', (len)), (void) 0)  
+#ifndef bzero
+#define bzero(b,len) (memset((b), '\0', (len)), (void) 0)
+#endif
+#ifndef bcopy
 #define bcopy(b1,b2,len) (memmove((b2), (b1), (len)), (void) 0)
+#endif
 #define IPV6 AF_INET6
 #define IPV4 AF_INET
 #define PACKET AF_PACKET
